@@ -9,7 +9,7 @@ RUN mkdir /var/cache/yum/base/ \
     && echo "http://vault.centos.org/5.11/updates/x86_64/" > /var/cache/yum/updates/mirrorlist.txt \
     && echo "http://vault.centos.org/5.11/centosplus/x86_64/" > /var/cache/yum/libselinux/mirrorlist.txt
 
-WORKDIR /srv/pyinstaller
+WORKDIR /tmp/pyinstaller
 
 RUN yum install -y gcc gcc44 zlib-devel python-setuptools readline-devel wget make perl
 
@@ -17,7 +17,7 @@ COPY openssl-1.0.2u.tar.gz .
 
 RUN tar zxf openssl-1.0.2u.tar.gz
 
-WORKDIR /srv/pyinstaller/openssl-1.0.2u
+WORKDIR /tmp/pyinstaller/openssl-1.0.2u
 
 ENV CC /usr/bin/gcc44
 
@@ -27,17 +27,17 @@ RUN sed -i.orig '/^CFLAG/s/$/ -fPIC/' Makefile
 
 RUN make && make install
 
-WORKDIR /srv/pyinstaller
+WORKDIR /tmp/pyinstaller
 
 COPY Python-3.6.11.tgz .
 
 RUN tar zxf Python-3.6.11.tgz
 
-WORKDIR /srv/pyinstaller/Python-3.6.11/Modules
+WORKDIR /tmp/pyinstaller/Python-3.6.11/Modules
 
 COPY Setup.dist .
 
-WORKDIR /srv/pyinstaller/Python-3.6.11
+WORKDIR /tmp/pyinstaller/Python-3.6.11
 
 RUN ./configure --prefix=/opt/python36 --enable-shared
 
@@ -53,7 +53,7 @@ RUN source ~/.bashrc \
     && /opt/python36/bin/pip3.6 install --upgrade pip \
     && /opt/python36/bin/pip3.6 install pyinstaller
 
-RUN rm -rf /srv/pyinstaller
+RUN rm -rf /tmp/pyinstaller
 
 VOLUME /src
 
