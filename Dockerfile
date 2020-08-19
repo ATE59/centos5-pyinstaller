@@ -56,6 +56,7 @@ RUN source ~/.bashrc \
 RUN rm -rf /srv/pyinstaller
 
 VOLUME /src
+
 WORKDIR /src
 
 COPY entrypoint.sh /entrypoint.sh
